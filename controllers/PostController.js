@@ -203,6 +203,37 @@ exports.fetchAllPosts = async (req, res) => {
   }
 }
 
+exports.fetchPostById = async (req, res) => {
+  try {
+    const {
+      post_id
+    } = req.query
+
+    const result = await Posts.findById(post_id)
+
+    if (!result) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid post_id",
+      })
+    }
+
+    return res.json({
+      success: true,
+      message: "Post fetched Successfully",
+      data: result
+    })
+
+  } catch (error) {
+    console.log("error in getting post by id => ", error)
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server error",
+    })
+  }
+}
+
 // un optimal
 // exports.fetchAllPosts = async (req, res) => {
 //   try {
